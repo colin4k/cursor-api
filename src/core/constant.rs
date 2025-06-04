@@ -83,8 +83,8 @@ def_pub_const!(
     GEMINI_2_5_PRO_MAX => "gemini-2.5-pro-max",
     GEMINI_2_0_FLASH_THINKING_EXP => "gemini-2.0-flash-thinking-exp",
     GEMINI_2_0_FLASH => "gemini-2.0-flash",
-    GEMINI_2_5_FLASH_PREVIEW_0520 => "gemini-2.5-flash-preview-0520",
-    GEMINI_2_5_FLASH_PREVIEW_0417 => "gemini-2.5-flash-preview-0417",
+    GEMINI_2_5_FLASH_PREVIEW_0520 => "gemini-2.5-flash-preview-05-20",
+    GEMINI_2_5_FLASH_PREVIEW_0417 => "gemini-2.5-flash-preview-04-17",
 
     // Deepseek 模型
     DEEPSEEK_V3 => "deepseek-v3",
