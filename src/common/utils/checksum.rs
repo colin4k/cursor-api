@@ -62,7 +62,8 @@ pub fn generate_timestamp_header() -> [u8; 8] {
 #[inline]
 pub fn generate_checksum(device_id: &str, mac_addr: Option<&str>) -> String {
     let timestamp_header = generate_timestamp_header();
-    let encoded = unsafe { str::from_utf8_unchecked(&timestamp_header) };
+    // Use the safe version instead of the unstable inherent_str_constructors feature
+    let encoded = std::str::from_utf8(&timestamp_header).unwrap_or_default();
     match mac_addr {
         Some(mac) => format!("{encoded}{device_id}/{mac}"),
         None => format!("{encoded}{device_id}"),
@@ -114,24 +115,25 @@ pub fn generate_checksum_with_repair(checksum: &str) -> String {
     }
 
     let timestamp_header = generate_timestamp_header();
-    let encoded = unsafe { str::from_utf8_unchecked(&timestamp_header) };
+    // Use the safe version instead of the unstable inherent_str_constructors feature
+    let encoded = std::str::from_utf8(&timestamp_header).unwrap_or_default();
 
     // 校验通过后构造结果
     match len {
         72 => format!(
             "{encoded}{}/{}",
-            unsafe { std::str::from_utf8_unchecked(bytes.get_unchecked(8..)) },
+            std::str::from_utf8(&bytes[8..]).unwrap_or_default(),
             generate_hash()
         ),
         129 => format!(
             "{encoded}{}/{}",
-            unsafe { std::str::from_utf8_unchecked(bytes.get_unchecked(..64)) },
-            unsafe { std::str::from_utf8_unchecked(bytes.get_unchecked(65..)) }
+            std::str::from_utf8(&bytes[..64]).unwrap_or_default(),
+            std::str::from_utf8(&bytes[65..]).unwrap_or_default()
         ),
         137 => format!(
             "{encoded}{}/{}",
-            unsafe { std::str::from_utf8_unchecked(bytes.get_unchecked(8..72)) },
-            unsafe { std::str::from_utf8_unchecked(bytes.get_unchecked(73..)) }
+            std::str::from_utf8(&bytes[8..72]).unwrap_or_default(),
+            std::str::from_utf8(&bytes[73..]).unwrap_or_default()
         ),
         _ => unreachable!(),
     }
@@ -146,21 +148,18 @@ pub fn extract_time_ks(timestamp_base64: &str) -> Option<u64> {
 
     deobfuscate_bytes(&mut timestamp_bytes);
 
-    unsafe {
-        if timestamp_bytes.get_unchecked(0) != timestamp_bytes.get_unchecked(4)
-            || timestamp_bytes.get_unchecked(1) != timestamp_bytes.get_unchecked(5)
-        {
-            return None;
-        }
-
-        // 使用后四位还原 timestamp
-        Some(
-            ((*timestamp_bytes.get_unchecked(2) as u64) << 24)
-                | ((*timestamp_bytes.get_unchecked(3) as u64) << 16)
-                | ((*timestamp_bytes.get_unchecked(4) as u64) << 8)
-                | (*timestamp_bytes.get_unchecked(5) as u64),
-        )
+    // Use safe indexing instead of unsafe get_unchecked
+    if timestamp_bytes[0] != timestamp_bytes[4] || timestamp_bytes[1] != timestamp_bytes[5] {
+        return None;
     }
+
+    // 使用后四位还原 timestamp
+    Some(
+        ((timestamp_bytes[2] as u64) << 24)
+            | ((timestamp_bytes[3] as u64) << 16)
+            | ((timestamp_bytes[4] as u64) << 8)
+            | (timestamp_bytes[5] as u64),
+    )
 }
 
 pub fn validate_checksum(checksum: &str) -> bool {
@@ -196,7 +195,8 @@ pub fn validate_checksum(checksum: &str) -> bool {
     }
 
     // 统一时间戳验证（无需分层）
-    let time_valid = extract_time_ks(unsafe { checksum.get_unchecked(..8) }).is_some();
+    // Use safe substring instead of unsafe get_unchecked
+    let time_valid = extract_time_ks(&checksum[..8]).is_some();
 
     time_valid
 }
@@ -213,14 +213,15 @@ pub fn extract_hashes(checksum: &str) -> Option<(Vec<u8>, Vec<u8>)> {
     match checksum.len() {
         72 => {
             // 格式：8字节时间戳 + 64字节设备哈希
-            let device_hash = hex::decode(unsafe { checksum.get_unchecked(8..) }).ok()?; // 8..72
+            // Use safe substring instead of unsafe get_unchecked
+            let device_hash = hex::decode(&checksum[8..]).ok()?; // 8..72
             Some((device_hash, Vec::new()))
         }
         137 => {
             // 格式：8时间戳 + 64设备哈希 + '/' + 64MAC哈希
             // 直接按固定位置切割（validate_checksum已确保索引72是'/'）
-            let device_hash = hex::decode(unsafe { checksum.get_unchecked(8..72) }).ok()?;
-            let mac_hash = hex::decode(unsafe { checksum.get_unchecked(73..) }).ok()?; // 73..137
+            let device_hash = hex::decode(&checksum[8..72]).ok()?;
+            let mac_hash = hex::decode(&checksum[73..]).ok()?; // 73..137
             Some((device_hash, mac_hash))
         }
         // validate_checksum已过滤其他长度，此处应为不可达代码
