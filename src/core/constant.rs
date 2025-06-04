@@ -247,7 +247,7 @@ create_models!(
     GPT_4_1 => OPENAI,
 );
 
-pub const FREE_MODELS: [&str; 8] = [
+pub const FREE_MODELS: [&str; 11] = [
     CURSOR_FAST,
     CURSOR_SMALL,
     GPT_4O_MINI,
@@ -268,7 +268,7 @@ pub const LONG_CONTEXT_MODELS: [&str; 4] = [
     CLAUDE_3_5_SONNET_200K,
 ];
 
-const SUPPORTED_THINKING_MODELS: [&str; 10] = [
+const SUPPORTED_THINKING_MODELS: [&str; 12] = [
     CLAUDE_3_7_SONNET_THINKING,
     CLAUDE_3_7_SONNET_THINKING_MAX,
     CLAUDE_4_SONNET_THINKING,
@@ -283,7 +283,7 @@ const SUPPORTED_THINKING_MODELS: [&str; 10] = [
     O3_MINI,
 ];
 
-const SUPPORTED_IMAGE_MODELS: [&str; 19] = [
+const SUPPORTED_IMAGE_MODELS: [&str; 21] = [
     DEFAULT,
     CLAUDE_3_5_SONNET,
     CLAUDE_3_7_SONNET,
