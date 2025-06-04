@@ -53,6 +53,10 @@ def_pub_const!(
     CLAUDE_3_7_SONNET_THINKING => "claude-3.7-sonnet-thinking",
     CLAUDE_3_7_SONNET_MAX => "claude-3.7-sonnet-max",
     CLAUDE_3_7_SONNET_THINKING_MAX => "claude-3.7-sonnet-thinking-max",
+    CLAUDE_4_SONNET => "claude-4-sonnet",
+    CLAUDE_4_SONNET_THINKING => "claude-4-sonnet-thinking",
+    CLAUDE_4_SONNET_MAX => "claude-4-sonnet-max",
+    CLAUDE_4_SONNET_THINKING_MAX => "claude-4-sonnet-thinking-max",
 
     // OpenAI 模型
     GPT_4 => "gpt-4",
@@ -79,6 +83,8 @@ def_pub_const!(
     GEMINI_2_5_PRO_MAX => "gemini-2.5-pro-max",
     GEMINI_2_0_FLASH_THINKING_EXP => "gemini-2.0-flash-thinking-exp",
     GEMINI_2_0_FLASH => "gemini-2.0-flash",
+    GEMINI_2_5_FLASH_PREVIEW_0520 => "gemini-2.5-flash-preview-0520",
+    GEMINI_2_5_FLASH_PREVIEW_0417 => "gemini-2.5-flash-preview-0417",
 
     // Deepseek 模型
     DEEPSEEK_V3 => "deepseek-v3",
@@ -203,6 +209,10 @@ create_models!(
     CLAUDE_3_7_SONNET_THINKING => ANTHROPIC,
     CLAUDE_3_7_SONNET_MAX => ANTHROPIC,
     CLAUDE_3_7_SONNET_THINKING_MAX => ANTHROPIC,
+    CLAUDE_4_SONNET => ANTHROPIC,
+    CLAUDE_4_SONNET_THINKING => ANTHROPIC,
+    CLAUDE_4_SONNET_MAX => ANTHROPIC,
+    CLAUDE_4_SONNET_THINKING_MAX => ANTHROPIC,
     GPT_4 => OPENAI,
     GPT_4O => OPENAI,
     GPT_4_5_PREVIEW => OPENAI,
@@ -225,6 +235,8 @@ create_models!(
     GEMINI_2_5_PRO_MAX => GOOGLE,
     GEMINI_2_0_FLASH_THINKING_EXP => GOOGLE,
     GEMINI_2_0_FLASH => GOOGLE,
+    GEMINI_2_5_FLASH_PREVIEW_0520 => GOOGLE,
+    GEMINI_2_5_FLASH_PREVIEW_0417 => GOOGLE,
     DEEPSEEK_V3 => DEEPSEEK,
     DEEPSEEK_R1 => DEEPSEEK,
     O3_MINI => OPENAI,
@@ -244,6 +256,9 @@ pub const FREE_MODELS: [&str; 8] = [
     DEEPSEEK_V3_1,
     GROK_3_MINI_BETA,
     GPT_4_1,
+    GEMINI_2_0_FLASH,
+    GEMINI_2_5_FLASH_PREVIEW_0520,
+    GEMINI_2_5_FLASH_PREVIEW_0417,
 ];
 
 pub const LONG_CONTEXT_MODELS: [&str; 4] = [
@@ -256,6 +271,8 @@ pub const LONG_CONTEXT_MODELS: [&str; 4] = [
 const SUPPORTED_THINKING_MODELS: [&str; 10] = [
     CLAUDE_3_7_SONNET_THINKING,
     CLAUDE_3_7_SONNET_THINKING_MAX,
+    CLAUDE_4_SONNET_THINKING,
+    CLAUDE_4_SONNET_THINKING_MAX,
     O1_MINI,
     O1_PREVIEW,
     O1,
@@ -273,6 +290,8 @@ const SUPPORTED_IMAGE_MODELS: [&str; 19] = [
     CLAUDE_3_7_SONNET_THINKING,
     CLAUDE_3_7_SONNET_MAX,
     CLAUDE_3_7_SONNET_THINKING_MAX,
+    CLAUDE_4_SONNET_THINKING,
+    CLAUDE_4_SONNET_THINKING_MAX,
     GPT_4,
     GPT_4O,
     GPT_4_5_PREVIEW,
